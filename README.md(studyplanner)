@@ -1,0 +1,30 @@
+# Smart Study Planner
+
+## Problem Statement
+Many students struggle with managing their study schedules effectively, leading to missed deadlines, cramming, and inefficient learning.
+Without a clear plan, it can be hard to balance multiple subjects and track progress. The Smart Study Planner aims to solve this by providing
+an easy-to-use tool that organizes study schedules, sets achievable goals, and tracks completion rates.
+
+## Project Objectives
+* To help students organize their subjects and study sessions in a single program.
+* To provide reminders and progress tracking to encourage consistent study habits.
+* To allow easy updates to schedules as priorities change.
+* To make study planning accessible to students of all technical skill levels.
+
+## Planned Features
+* Add, edit, and delete subjects from the study list.
+* Set study goals for each subject.
+* Track progress and completion percentage.
+* Simple, menu-driven interface for ease of use.
+
+## Planned Inputs and Outputs
+
+### Inputs:
+* Subject names
+* Study time goals (daily or weekly)
+* Progress updates from the user
+
+### Outputs:
+* Display of study schedule
+* Progress percentage for each subject
+* Notifications for completed or overdue goals
