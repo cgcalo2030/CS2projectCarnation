@@ -1,3 +1,28 @@
+[v2.0.0] - 2026-2-15
+●Added / Improved
+-Improved input validation to prevent user errors
+-Refactored functions for better readability
+-Cleaner progress summary display
+-More organized data handling and menu flow
+
+●Retained Features
+-Add, edit, and delete subjects
+-Log weekly study hours
+-Automatic weekly reset of progress
+-Local data storage using JSON
+-Not Included
+-Online accounts or cloud syncing
+-Graphical user interface
+-Technologies Used
+-Python (core language)
+-JSON (local data storage)
+-GitHub (version control)
+
+References (APA)
+Association for Computing Machinery. (2018). ACM Code of Ethics and Professional Conduct. https://www.acm.org/code-of-ethics�
+
+---------------3RD QUARTER--------------
+
 [v1.2.0] - 2025-12-05
 ​Added (New Features)
 ​Progress Visualizer: Introduced a console-based progress bar ([======-----]) for each subject, providing an instant visual status of goal completion.
@@ -26,3 +51,5 @@
 ​Progress Calculation: Basic function to calculate and display the percentage of the goal completed.
 ​Data Persistence: Implemented saving and loading of study data using study_data.json.
 ​Menu System: Simple, menu-driven command-line interface for navigation.
+
+
