@@ -10,10 +10,10 @@
 -Log weekly study hours
 -Automatic weekly reset of progress
 -Local data storage using JSON
--Not Included
+●Not Included
 -Online accounts or cloud syncing
 -Graphical user interface
--Technologies Used
+●Technologies Used
 -Python (core language)
 -JSON (local data storage)
 -GitHub (version control)
