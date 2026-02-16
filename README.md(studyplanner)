@@ -29,17 +29,125 @@ an easy-to-use tool that organizes study schedules, sets achievable goals, and t
 * Progress percentage for each subject
 * Notifications for completed or overdue goals
 
+---
+
+Study Planner v2
+
+Quarter 3 Project
+
+Project Overview
+
+The Study Planner is a Python-based command-line application designed to help students track their weekly study hours per subject. For Quarter 3, the project focuses on improving an existing system through code refactoring, documentation, and ethical evaluation rather than creating a completely new application.
+
+This approach reflects real-world software development, where programs are continuously improved over time.
+
+
+---
+
+Features
+
+Add, edit, and delete subjects
+
+Set weekly study goals
+
+Log study hours per subject
+
+Automatic weekly reset of progress
+
+Text-based progress bar
+
+Local data storage using JSON
+
+
+
+---
+
 Methodology
-The Study Planner was developed using Python as a command-line application.
-Core features were implemented using functions that handle subject management, study time logging, and weekly progress resets. 
-Study data is stored locally in a JSON file to allow persistence without requiring internet access.
+
+The program is written in Python and uses functions to manage subjects, study time, and weekly resets. Study data is stored locally in a JSON file to allow the program to save progress even after closing.
+
+Python was chosen because it is beginner-friendly and appropriate for the student’s level. JSON was used for storage because it is simple, lightweight, and easy to understand.
+
+The application does not use a frontend–backend architecture. All logic and user interaction occur within the command line, which reduces complexity and avoids unnecessary dependencies.
+
+Design decisions prioritized simplicity, readability, user privacy, and accessibility through clear text prompts.
 
 
-Python was chosen because it is beginner-friendly and suitable for the student’s current level. 
-JSON was selected for storage because it is lightweight and easy to read.
+---
 
-The program does not use a frontend–backend architecture. All user interaction and data processing occur within the same Python file.
+Technologies Used
+
+Python – main programming language
+
+JSON – local data storage
+
+GitHub – version control and documentation
 
 
-Design decisions prioritized simplicity, privacy, and accessibility. No personal data is collected, and the interface uses clear text prompts to support ease of use. 
-Ethical considerations such as user privacy and responsible data handling were guided by the Association for Computing Machinery Code of Ethics.
+
+---
+
+Installation and Usage
+
+1. Make sure Python 3 is installed.
+
+
+2. Clone or download this repository.
+
+
+3. Open a terminal in the project folder.
+
+
+4. Run the program using:
+
+python, studyplanner.py
+
+
+5. Follow the on-screen menu instructions.
+
+
+
+
+---
+
+Current Project Status
+
+Quarter 3 version (v2)
+
+Core features completed
+
+Code structure improved and documented
+
+Project will continue to be enhanced in future quarters
+
+
+
+---
+
+Programming and Computing Ethics
+
+All code in this repository was written by the student based on concepts learned in class. No proprietary or copyrighted code was copied.
+
+User privacy is respected by not collecting personal information and by storing all data locally. Accessibility was considered by using a simple, text-based interface that is easy to navigate.
+
+These practices align with the principles of the Association for Computing Machinery Code of Ethics, particularly regarding responsibility, honesty, and respect for users.
+
+
+---
+
+References
+
+Association for Computing Machinery. (2018). ACM Code of Ethics and Professional Conduct. https://www.acm.org/code-of-ethics
+
+Python Software Foundation. (2024). Python documentation. https://docs.python.org/3/�
+
+
+
+
+
+
+
+
+
+
+
