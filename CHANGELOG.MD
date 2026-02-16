@@ -1,5 +1,5 @@
 [v2.0.0] - 2026-2-15
-●Added / Improved
+●To be Added / Improved
 -Improved input validation to prevent user errors
 -Refactored functions for better readability
 -Cleaner progress summary display
