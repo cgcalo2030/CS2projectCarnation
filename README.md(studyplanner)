@@ -28,3 +28,18 @@ an easy-to-use tool that organizes study schedules, sets achievable goals, and t
 * Display of study schedule
 * Progress percentage for each subject
 * Notifications for completed or overdue goals
+
+Methodology
+The Study Planner was developed using Python as a command-line application.
+Core features were implemented using functions that handle subject management, study time logging, and weekly progress resets. 
+Study data is stored locally in a JSON file to allow persistence without requiring internet access.
+
+
+Python was chosen because it is beginner-friendly and suitable for the student’s current level. 
+JSON was selected for storage because it is lightweight and easy to read.
+
+The program does not use a frontend–backend architecture. All user interaction and data processing occur within the same Python file.
+
+
+Design decisions prioritized simplicity, privacy, and accessibility. No personal data is collected, and the interface uses clear text prompts to support ease of use. 
+Ethical considerations such as user privacy and responsible data handling were guided by the Association for Computing Machinery Code of Ethics.
