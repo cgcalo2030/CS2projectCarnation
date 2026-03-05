@@ -19,7 +19,7 @@
 -GitHub (version control)
 
 References (APA)
-Association for Computing Machinery. (2018). ACM Code of Ethics and Professional Conduct. https://www.acm.org/code-of-ethics�
+Association for Computing Machinery. (2018). ACM Code of Ethics and Professional Conduct. https://www.acm.org/code-of-ethics
 
 ---------------3RD QUARTER--------------
 
