@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+</html>
+<head>
+    <title>Smart Study Planner</title>
+    <style>
+        body {
+            font-family: Serif;
+            backgrounf: #f5f7fa;
+            text-align: center;
+        }
+      .box {
+         background: white;
+         padding: 20px;
+         margin: 20px auto;
+         width: 300px;
+         border-radius: 10px;
+         box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      }
+      input, button {
+          margin: 5px;
+          padding: 8px;
+          width: 90%;
+      }
+      button {
+          background: white;
+          border: none;
+      }
+    </style>
+</head>
+
+<body>
+<h1>📚 Smart Study Planner</h1>
+
+<div class="box">
+    <h3>Add Task</h3>
+    <input id="task" placeholder="Task name"> 
+    <button onclick="addTask()">Add</button>
+</div>
+
+</div class="box">
+     <h3>Tasks</h3>
+     <ul id="list"></ul>
+</div>
+
+<script>
+  let tasks = [];
+
+  function addTask() {
+    let input = document.getElementById("task");
+    if (input.value === "") return;
+
+    tasks.push(input.value);
+    input.value = "";
+    showTasks();
+  }
+
+  function showTasks() {
+    let list = document.getElementById("list");
+    list.innerHTML = "";
+
+    tasks.forEach((t, i) => {
+        let li = document.createElement("li");
+        li.innerHTML = t + " <button onclick='removeTask("+i+")'>❌</button>";
+        list.appendChild(li);
+    });
+}
+
+function removeTask(i) {
+    tasks.splice(i, 1);
+    showTasks();
+}
+</script>
+
+</body>
+</html>
+
+  
+  
+        
