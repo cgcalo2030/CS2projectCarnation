@@ -76,7 +76,7 @@ def show(data):
 # ------------------ Actions ------------------
 
 def add_subject(data):
-    name = input("New subject name: ").strip()
+    name = input("New subject name: ").strip().title()
     if not name:
         print("❌ Empty name.")
         return
@@ -106,6 +106,9 @@ def log_time(data):
     try:
         subject = subs[int(input("Choose subject #: ")) - 1]
         hrs = float(input("Hours studied: "))
+        if hrs <= 0:
+            print("❌ Enter a positive number.")
+            return
     except:
         print("❌ Invalid input.")
         return
