@@ -1,6 +1,7 @@
 import streamlit as st
 import json
 import os
+import plotly.graph_objects as go 
 from datetime import datetime
 
 DATA_FILE = "study_data.json"
@@ -98,12 +99,28 @@ else:
                 st.progress(pct)
                 st.caption(f"{int(pct*100)}% Complete")
 
-    # 3. Interactive Chart
-    st.divider()
-    st.subheader("📈 Visual Comparison")
-    chart_data = {
-        "Subject": list(data["subjects"].keys()),
-        "Hours Studied": [s["studied"] for s in data["subjects"].values()],
-        "Goal": [s["goal"] for s in data["subjects"].values()]
-    }
-    st.bar_chart(chart_data, x="Subject", y=["Hours Studied", "Goal"])
+    # 3. Interactive Grouped Chart
+st.divider()
+st.subheader("📈 Goal vs. Actual (Side-by-Side)")
+
+subjects = list(data["subjects"].keys())
+hours_studied = [s["studied"] for s in data["subjects"].values()]
+goals = [s["goal"] for s in data["subjects"].values()]
+
+# Create the figure
+fig = go.Figure(data=[
+    go.Bar(name='Hours Studied', x=subjects, y=hours_studied, marker_color='#1f77b4'),
+    go.Bar(name='Goal', x=subjects, y=goals, marker_color='#d62728')
+])
+
+# Change the bar mode to 'group' for that side-by-side "type shi"
+fig.update_layout(
+    barmode='group', 
+    template="plotly_dark", # Keeps the vibe clean
+    xaxis_title="Subjects",
+    yaxis_title="Hours",
+    margin=dict(l=20, r=20, t=20, b=20),
+    height=400
+)
+
+st.plotly_chart(fig, use_container_width=True)
