@@ -1,186 +1,109 @@
-import json, os
+import streamlit as st
+import json
+import os
 from datetime import datetime
 
 DATA_FILE = "study_data.json"
-DEFAULT_GOAL = 10
-BAR_LEN = 20
 
-# ------------------ Storage ------------------
+# ------------------ Data Handling ------------------
 
-def load():
+def load_data():
     if os.path.exists(DATA_FILE):
         try:
             with open(DATA_FILE) as f:
                 return json.load(f)
         except:
-            print("⚠️ Corrupted data file. Starting fresh.")
-    return {"subjects": {}, "last_reset": today()}
+            pass
+    return {"subjects": {}, "last_reset": datetime.now().strftime("%Y-%m-%d")}
 
-def save(data):
+def save_data(data):
     with open(DATA_FILE, "w") as f:
         json.dump(data, f, indent=4)
 
-def today():
-    return datetime.now().strftime("%Y-%m-%d")
+# ------------------ UI Setup ------------------
 
-# ------------------ Helpers ------------------
+st.set_page_config(page_title="Study Planner", page_icon="📚", layout="wide")
 
-def weekly_reset(data):
-    try:
-        last = datetime.strptime(data["last_reset"], "%Y-%m-%d")
-        if (datetime.now() - last).days >= 7:
-            for s in data["subjects"].values():
-                s["studied"] = 0
-            data["last_reset"] = today()
-            save(data)
-            print("\n🌟 Weekly goals reset!")
-    except:
-        data["last_reset"] = today()
+# Initialize Session State to keep data fresh
+if 'data' not in st.session_state:
+    st.session_state.data = load_data()
 
-def bar(percent):
-    filled = int((percent/100)*BAR_LEN)
-    return "[" + "█"*filled + "░"*(BAR_LEN-filled) + "]"
+data = st.session_state.data
 
-def progress(sub):
-    goal = sub.get("goal", DEFAULT_GOAL)
-    studied = sub.get("studied", 0)
-    pct = min(100, studied/goal*100)
-    if pct >= 100: status = "✅ Complete"
-    elif pct >= 75: status = "On Track"
-    elif pct >= 50: status = "Progress"
-    else: status = "Needs Focus"
-    return pct, status
+# ------------------ Sidebar (Management) ------------------
 
-# ------------------ UI Functions ------------------
-
-def show(data):
-    subjects = data["subjects"]
-    if not subjects:
-        print("\n📚 No subjects yet.")
-        return
+with st.sidebar:
+    st.header("⚙️ Manage Subjects")
     
-    print("\n" + "="*60)
-    print("SMART STUDY PLANNER".center(60))
-    print("="*60)
-    print(f"{'Subject':<15}{'Goal':<8}{'Studied':<10}{'Progress':<20}{'Status'}")
-    print("-"*60)
+    with st.expander("➕ Add New"):
+        new_name = st.text_input("Name").strip().title()
+        new_goal = st.number_input("Goal (hrs)", min_value=0.5, value=10.0, step=0.5)
+        if st.button("Add Subject", use_container_width=True):
+            if new_name and new_name not in data["subjects"]:
+                data["subjects"][new_name] = {"goal": new_goal, "studied": 0}
+                save_data(data)
+                st.rerun()
+            else:
+                st.error("Invalid name or already exists.")
 
-    for name, s in subjects.items():
-        pct, status = progress(s)
-        print(f"{name:<15}{s['goal']:<8}{s['studied']:<10}{bar(pct)} {int(pct)}% {status}")
+    if data["subjects"]:
+        with st.expander("✏️ Edit / Delete"):
+            target = st.selectbox("Select Subject", list(data["subjects"].keys()))
+            col1, col2 = st.columns(2)
+            if col1.button("🗑️ Delete", use_container_width=True):
+                del data["subjects"][target]
+                save_data(data)
+                st.rerun()
+            
+            new_g = st.number_input("Update Goal", min_value=0.5, value=float(data["subjects"][target]["goal"]))
+            if st.button("Update Goal", use_container_width=True):
+                data["subjects"][target]["goal"] = new_g
+                save_data(data)
+                st.rerun()
 
-    print("-"*60)
-    print("Last Reset:", data["last_reset"])
-    print("="*60)
+# ------------------ Main Dashboard ------------------
 
-# ------------------ Actions ------------------
+st.title("📚 Smart Study Planner")
+st.caption(f"Last Reset: {data['last_reset']}")
 
-def add_subject(data):
-    name = input("New subject name: ").strip().title()
-    if not name:
-        print("❌ Empty name.")
-        return
-    if name in data["subjects"]:
-        print("⚠ Already exists.")
-        return
+if not data["subjects"]:
+    st.info("Add a subject in the sidebar to get started! 🚀")
+else:
+    # 1. Quick Log Section
+    st.subheader("⏱️ Log Study Time")
+    log_col1, log_col2, log_col3 = st.columns([2, 1, 1])
     
-    try:
-        goal = float(input("Weekly goal (hrs): "))
-    except:
-        print("❌ Invalid number.")
-        return
-    
-    data["subjects"][name] = {"goal": goal, "studied": 0}
-    save(data)
-    print(f"Added {name} ✔")
+    with log_col1:
+        sub_to_log = st.selectbox("Subject", list(data["subjects"].keys()), label_visibility="collapsed")
+    with log_col2:
+        hrs_to_add = st.number_input("Hours", min_value=0.1, step=0.5, label_visibility="collapsed")
+    with log_col3:
+        if st.button("Log Time", use_container_width=True, type="primary"):
+            data["subjects"][sub_to_log]["studied"] += hrs_to_add
+            save_data(data)
+            st.success(f"Logged {hrs_to_add}h for {sub_to_log}!")
+            st.rerun()
 
-def log_time(data):
-    subs = list(data["subjects"].keys())
-    if not subs:
-        print("No subjects.")
-        return
+    st.divider()
 
-    for i, s in enumerate(subs, 1):
-        print(f"{i}. {s}")
+    # 2. Visual Progress Cards
+    st.subheader("📊 Your Progress")
+    cols = st.columns(3) # Grid layout
+    for i, (name, s) in enumerate(data["subjects"].items()):
+        with cols[i % 3]:
+            pct = min(1.0, s['studied'] / s['goal'])
+            with st.container(border=True):
+                st.markdown(f"### {name}")
+                st.metric("Studied", f"{s['studied']}h", f"Goal: {s['goal']}h", delta_color="off")
+                st.progress(pct)
+                st.caption(f"{int(pct*100)}% Complete")
 
-    try:
-        subject = subs[int(input("Choose subject #: ")) - 1]
-        hrs = float(input("Hours studied: "))
-        if hrs <= 0:
-            print("❌ Enter a positive number.")
-            return
-    except:
-        print("❌ Invalid input.")
-        return
-    
-    data["subjects"][subject]["studied"] += hrs
-    save(data)
-
-    pct, _ = progress(data["subjects"][subject])
-    print(f"Logged! Now at {pct:.0f}%")
-
-def edit_subject(data):
-    subs = list(data["subjects"].keys())
-    if not subs:
-        print("No subjects.")
-        return
-
-    for i, s in enumerate(subs, 1):
-        print(f"{i}. {s}")
-
-    try:
-        name = subs[int(input("Choose subject #: ")) - 1]
-    except:
-        print("❌ Invalid.")
-        return
-
-    print("\n1. Rename\n2. Change Goal\n3. Delete")
-    c = input("Choice: ")
-
-    if c == "1":
-        new = input("New name: ").strip()
-        if new and new not in subs:
-            data["subjects"][new] = data["subjects"].pop(name)
-            save(data)
-            print("Renamed ✔")
-
-    elif c == "2":
-        try:
-            new_goal = float(input("New goal hours: "))
-            data["subjects"][name]["goal"] = new_goal
-            save(data)
-            print("Goal updated ✔")
-        except:
-            print("❌ Invalid.")
-
-    elif c == "3":
-        del data["subjects"][name]
-        save(data)
-        print("Deleted ✔")
-
-# ------------------ Main App ------------------
-
-def main():
-    data = load()
-    weekly_reset(data)
-
-    while True:
-        os.system("cls" if os.name == "nt" else "clear")
-        show(data)
-
-        print("\n1. Add Subject")
-        print("2. Log Study Time")
-        print("3. Edit/Delete Subject")
-        print("4. Exit")
-
-        choice = input("Choice: ").strip()
-        if choice == "1": add_subject(data)
-        elif choice == "2": log_time(data)
-        elif choice == "3": edit_subject(data)
-        elif choice == "4":
-            print("Goodbye! 👋")
-            break
-        input("\nEnter to continue...")
-
-if __name__ == "__main__":
-    main()
+    # 3. Interactive Chart
+    st.divider()
+    st.subheader("📈 Visual Comparison")
+    chart_data = {
+        "Subject": list(data["subjects"].keys()),
+        "Hours Studied": [s["studied"] for s in data["subjects"].values()],
+        "Goal": [s["goal"] for s in data["subjects"].values()]
+    }
+    st.bar_chart(chart_data, x="Subject", y=["Hours Studied", "Goal"])
